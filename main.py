@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket,  WebSocketDisconnect
 import uvicorn
+from image import DrawImage
 
 
 app = FastAPI(
@@ -52,6 +53,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 else:
                     message = COMMAND_LIST[command]
                 print(message)
+                if command == 'ON':
+                    image = DrawImage.from_file("flashlight_on.png")
+                    image.draw_image()
                 await websocket.send_text(message)
             else:
                 await websocket.send_text('Wrong command')
